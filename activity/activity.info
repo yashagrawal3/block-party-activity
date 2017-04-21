@@ -1,7 +1,7 @@
 [Activity]
 name = BlockParty
-service_name = org.laptop.BlockPartyActivity
-class = BlockPartyActivity.BlockPartyActivity
+bundle_id = org.laptop.BlockPartyActivity
+exec = sugar-activity BlockPartyActivity.BlockPartyActivity
 icon = activity-blockparty
-activity_version = 7 
+activity_version = 8 
 show_launcher = yes
