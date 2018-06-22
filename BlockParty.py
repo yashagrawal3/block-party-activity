@@ -23,25 +23,6 @@ import copy
 import socket
 import os
 
-class VanishingCursor:
-    
-    def __init__ (self, win, hide_time = 3):
-        self.save_cursor = None # area.get_cursor()
-        self.win = win
-        self.hide_time = hide_time
-        self.last_touched = time.time()
-        self.win.connect("motion-notify-event", self.move_event)
-        self.win.add_events(Gdk.EventMask.POINTER_MOTION_MASK)
-
-    def move_event (self, win, event):
-        self.win.window.set_cursor(self.save_cursor)
-        self.last_touched = time.time()
-        return True
-
-    def time_event (self):
-        if time.time()-self.last_touched > self.hide_time :
-            self.win.window.set_cursor(self.invisible)
-        return True
 
 class Color:
     def __init__(self, gdk_color):
@@ -345,7 +326,6 @@ class BlockParty:
 
     
     def keypress_cb(self, widget, event):
-#   print gtk.gdk.keyval_name(event.keyval)
        self.key_action(Gdk.keyval_name(event.keyval))
        return True
 
@@ -353,7 +333,6 @@ class BlockParty:
        return True
 
     def timer(self):
-        # self.vanishing_cursor.time_event()
         while self.game_mode == self.PLAY and time.time() >= self.next_tick:
             self.next_tick += self.time_step
             self.tick()  
@@ -507,7 +486,6 @@ class BlockParty:
         self.window.connect("draw", self.expose_cb)
         self.window.connect("key_press_event", self.keypress_cb)
         self.window.connect("key_release_event", self.keyrelease_cb)
-        self.vanishing_cursor = VanishingCursor(self.window, 5)
         self.window.show()
         # area = self.window.window
 #    area.set_cursor(invisible)
