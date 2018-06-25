@@ -19,8 +19,11 @@ class BlockPartyActivity(activity.Activity):
         self.connect('focus_out_event', self._focus_out)
         # Create a canvas
         canvas = Gtk.DrawingArea()
-        self.set_canvas(canvas)
         canvas.grab_focus()
+        Gtk.Widget.grab_focus(canvas)
+        Gtk.Widget.has_focus(canvas)
+        Gtk.Widget.is_focus(canvas)
+        self.set_canvas(canvas)
         canvas.show()
         self.show_all()
 

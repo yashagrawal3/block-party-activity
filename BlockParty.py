@@ -290,9 +290,9 @@ class BlockParty:
        cairo_ctx.fill()
     
     def expose_cb(self, widget, event):
-       cairo_ctx = widget.get_window().cairo_create()
-       self.update_picture(cairo_ctx) 
-       return True
+        cairo_ctx = widget.get_window().cairo_create()
+        self.update_picture(cairo_ctx)
+        return True
 
     def queue_draw_complete(self):
         self.queue_draw_score()
@@ -474,7 +474,6 @@ class BlockParty:
         # remove any children of the window that Sugar may have added
         # for widget in self.window.get_children():
         #     self.window.remove(widget)
-
         self.window_w = self.window.get_screen().get_width()
         self.window_h = self.window.get_screen().get_height()
 #        print self.window_w, "x", self.window_h
