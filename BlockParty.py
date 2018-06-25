@@ -481,7 +481,7 @@ class BlockParty:
 #        if self.window_w > 1200: self.window_w=1200
 #        if self.window_h > 900: self.window_h=900
         self.window.set_title("Block Party")
-        self.window.connect("destroy", lambda w: gtk.main_quit())
+        self.window.connect("destroy", lambda w: Gtk.main_quit())
         self.window.set_size_request(self.window_w, self.window_h)
         self.window.connect("draw", self.expose_cb)
         self.window.connect("key_press_event", self.keypress_cb)
