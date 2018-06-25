@@ -466,21 +466,21 @@ class BlockParty:
         print "Ah!"
         return True
 
-    def __init__(self, toplevel_window):
+    def __init__(self, canvas):
         self.glass=[[0]*self.bw for i in range(self.bh)]
         self.view_glass=None
-        self.window = toplevel_window
+        self.window = canvas
 
         # remove any children of the window that Sugar may have added
-        for widget in self.window.get_children():
-            self.window.remove(widget)
+        # for widget in self.window.get_children():
+        #     self.window.remove(widget)
 
         self.window_w = self.window.get_screen().get_width()
         self.window_h = self.window.get_screen().get_height()
 #        print self.window_w, "x", self.window_h
 #        if self.window_w > 1200: self.window_w=1200
 #        if self.window_h > 900: self.window_h=900
-        self.window.set_title("Block Party")
+        # self.window.set_title("Block Party")
         self.window.connect("destroy", lambda w: Gtk.main_quit())
         self.window.set_size_request(self.window_w, self.window_h)
         self.window.connect("draw", self.expose_cb)
