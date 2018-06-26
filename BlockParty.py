@@ -23,6 +23,25 @@ import copy
 import socket
 import os
 
+class VanishingCursor:
+
+    def __init__ (self, win, hide_time = 3):
+        self.save_cursor = None # area.get_cursor()
+        self.win = win
+        self.hide_time = hide_time
+        self.last_touched = time.time()
+        self.win.connect("motion-notify-event", self.move_event)
+        self.win.add_events(Gdk.EventMask.POINTER_MOTION_MASK)
+
+    def move_event (self, win, event):
+        self.win.get_window().set_cursor(self.save_cursor)
+        self.last_touched = time.time()
+        return True
+
+    def time_event (self):
+        if time.time()-self.last_touched > self.hide_time :
+            self.win.get_window().set_cursor(Gdk.Cursor(cursor_type=Gdk.CursorType.BLANK_CURSOR))
+        return True
 
 class Color:
     def __init__(self, gdk_color):
@@ -317,6 +336,7 @@ class BlockParty:
         self.view_glass=None   
         self.draw_background(cairo_ctx)
         self.draw_score(cairo_ctx)
+        self.draw_escape(cairo_ctx)
 
         self.draw_glass(cairo_ctx)
         if self.game_mode is self.GAME_OVER: self.draw_game_end_poster(cairo_ctx)
@@ -333,6 +353,7 @@ class BlockParty:
        return True
 
     def timer(self):
+        self.vanishing_cursor.time_event()
         while self.game_mode == self.PLAY and time.time() >= self.next_tick:
             self.next_tick += self.time_step
             self.tick()  
@@ -456,6 +477,15 @@ class BlockParty:
 	            cairo_ctx.rectangle(self.xnext+j*self.bwpx+self.bwpx/2, self.ynext+50+(3-i)*self.bhpx+self.bhpx/2, self.bwpx, self.bhpx)
         cairo_ctx.fill()
 
+    def draw_escape(self, cairo_ctx):
+        cairo_ctx.set_line_width(1)
+        cairo_ctx.set_source_rgb(0,
+                                 0,
+                                 0)
+
+        self.draw_string(cairo_ctx, 'Press ESC to exit', self.xnext+self.bwpx*2.5 + 60, self.window_h-50, True)
+        cairo_ctx.fill()
+
         
     def make_sound(self,filename):
         if self.sound and self.soundon:
@@ -486,6 +516,7 @@ class BlockParty:
         self.window.connect("draw", self.expose_cb)
         self.window.connect("key_press_event", self.keypress_cb)
         self.window.connect("key_release_event", self.keyrelease_cb)
+        self.vanishing_cursor = VanishingCursor(self.window, 5)
         self.window.show()
         # area = self.window.window
 #    area.set_cursor(invisible)
